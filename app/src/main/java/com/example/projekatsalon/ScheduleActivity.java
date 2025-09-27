@@ -35,7 +35,7 @@ public class ScheduleActivity extends AppCompatActivity {
     private static final String USER_EXPORT_KEY = "user_export_key";
 
     private static final String PREFS_NAME = "PREFS";
-    private static final String TEXT_KEY = "zakazivanje_key";
+    private static final String TEXT_KEY = "appointment_key";
 
     private String logged_user;
 
@@ -47,53 +47,56 @@ public class ScheduleActivity extends AppCompatActivity {
         Intent intent = getIntent();
         logged_user = intent.getStringExtra(USER_EXPORT_KEY);
 
-        TextView zakazivanje_termina = findViewById(R.id.prikaz_termina);
+        TextView appointment_display = findViewById(R.id.prikaz_termina);
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String savedText = sharedPreferences.getString(TEXT_KEY, "Nemate zakazan termin");
-        zakazivanje_termina.setText(savedText);
+        String savedText = sharedPreferences.getString(TEXT_KEY, "No appointment scheduled");
+        appointment_display.setText(savedText);
 
-        // Simuliranje vec zakazanih termina
-        // Ovo je lista Integera, kao vremena kada je nemoguce zakazati
+        // Simulating already booked appointments
+        // This is a list of Integers, representing times when booking is not possible
         List<Integer> Scheduled_times= new ArrayList<>();
-        Scheduled_times.add(8);
-        Scheduled_times.add(10);
+        Scheduled_times.add(9);
         Scheduled_times.add(11);
         Scheduled_times.add(14);
+        Scheduled_times.add(16);
 
-        // Radimo od 8 do 17, svaki termin sat vremena
-        List<String> Avalible_times = new ArrayList<>();
-        for (int i = 8; i <= 16; i++) {
-            if(!Scheduled_times.contains(i)){
-                Avalible_times.add(String.valueOf(i) + ":00 - " + String.valueOf(i + 1) +":00");
+        // Working hours from 9 AM to 6 PM, each appointment is 1.5 hours for nail services
+        List<String> Available_times = new ArrayList<>();
+        int[] startTimes = {9, 11, 13, 15, 17}; // 9:00, 11:00, 1:00, 3:00, 5:00
+        String[] timeSlots = {"9:00 AM - 10:30 AM", "11:00 AM - 12:30 PM", "1:00 PM - 2:30 PM",
+                "3:00 PM - 4:30 PM", "5:00 PM - 6:30 PM"};
+
+        for (int i = 0; i < startTimes.length; i++) {
+            if(!Scheduled_times.contains(startTimes[i])){
+                Available_times.add(timeSlots[i]);
             }
         }
 
-        //Dodavanje u DropDown
-        if(Avalible_times.isEmpty()){
-            Avalible_times.add("Nema slobodnih termina :(");
+        //Adding to DropDown
+        if(Available_times.isEmpty()){
+            Available_times.add("No available appointments :(");
         }
         Spinner spinner = findViewById(R.id.spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, Avalible_times);
+                android.R.layout.simple_spinner_item, Available_times);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
 
-
-        //Podesavanje kalendara
+        //Setting up calendar
         CalendarView calendarView = findViewById(R.id.calendarView);
-        //Minimalni dete (danasnji dan)
+        //Minimum date (today)
         Calendar minDate = Calendar.getInstance();
         calendarView.setMinDate(minDate.getTimeInMillis());
-        //Maksimalni dete (1 mesec)
+        //Maximum date (1 month ahead)
         Calendar maxDate = Calendar.getInstance();
         maxDate.add(Calendar.MONTH, 1);
         calendarView.setMaxDate(maxDate.getTimeInMillis());
-        //Da selektovan bude danasnji dan
+        //Set today as selected
         calendarView.setDate(minDate.getTimeInMillis(), false, true);
 
-        //Korisnik slobodno bira datum koji zeli
+        //User can freely choose desired date
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -104,67 +107,65 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
-        //Hvatanje Radio Grop-a iz layout-a
+        //Getting Radio Group from layout
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        // Dugme hvata podatke iz kalendara, spinnera i Radio Groupa i smesta ih
-        // u Text View koji koristimo za prikaz zakazanog termina
-        Button zakazi = findViewById(R.id.zakazi);
-        zakazi.setOnClickListener(new View.OnClickListener() {
+        // Button captures data from calendar, spinner and Radio Group and places it
+        // in Text View that we use to display the scheduled appointment
+        Button book = findViewById(R.id.zakazi);
+        book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> zakazivanje_data = new ArrayList<>();
+                List<String> appointment_data = new ArrayList<>();
 
                 long selectedDate = calendarView.getDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                String dateString = "Datum: " + sdf.format(new Date(selectedDate));
-                zakazivanje_data.add(dateString);
+                SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+                String dateString = "Date: " + sdf.format(new Date(selectedDate));
+                appointment_data.add(dateString);
 
-                String selectedSpinnerItem = "Vreme  " + spinner.getSelectedItem().toString();
-                zakazivanje_data.add(selectedSpinnerItem);
+                String selectedSpinnerItem = "Time: " + spinner.getSelectedItem().toString();
+                appointment_data.add(selectedSpinnerItem);
 
                 int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButton = findViewById(selectedRadioButtonId);
-                String selectedRadioButtonText = "Frizer " + radioButton.getText().toString();
-                zakazivanje_data.add(selectedRadioButtonText);
+                String selectedRadioButtonText = "Technician: " + radioButton.getText().toString();
+                appointment_data.add(selectedRadioButtonText);
 
-                TextView prikaz_termina = findViewById(R.id.prikaz_termina);
+                TextView appointment_display = findViewById(R.id.prikaz_termina);
                 StringBuilder stringBuilder = new StringBuilder();
-                for(String line : zakazivanje_data){
+                for(String line : appointment_data){
                     stringBuilder.append(line).append("\n");
                 }
-                prikaz_termina.setText(stringBuilder.toString());
-
+                appointment_display.setText(stringBuilder.toString());
             }
         });
 
-        // Otkazivanje termina
-        Button otkazi = findViewById(R.id.otkazi_termin);
-        otkazi.setOnClickListener(new View.OnClickListener() {
+        // Cancel appointment
+        Button cancel = findViewById(R.id.otkazi_termin);
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                zakazivanje_termina.setText(getString(R.string.zakazan_termin));
+                appointment_display.setText(getString(R.string.no_appointment));
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(TEXT_KEY, zakazivanje_termina.getText().toString());
+                editor.putString(TEXT_KEY, appointment_display.getText().toString());
                 editor.apply();
             }
         });
 
-        // Vracamo se na prethodni Activity (MainActivity)
-        Button nazad = findViewById(R.id.nazad);
-        final String TERMIN_EXPORT_KEY = "terminExportKey";
+        // Return to previous Activity (MainActivity)
+        Button back = findViewById(R.id.nazad);
+        final String APPOINTMENT_EXPORT_KEY = "appointmentExportKey";
 
-        nazad.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
-                if (!zakazivanje_termina.getText().toString().equals(getString(R.string.zakazan_termin))) {
-                    intent.putExtra(TERMIN_EXPORT_KEY, zakazivanje_termina.getText().toString());
+                if (!appointment_display.getText().toString().equals(getString(R.string.no_appointment))) {
+                    intent.putExtra(APPOINTMENT_EXPORT_KEY, appointment_display.getText().toString());
                 }
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(TEXT_KEY, zakazivanje_termina.getText().toString());
+                editor.putString(TEXT_KEY, appointment_display.getText().toString());
                 editor.apply();
                 startActivity(intent);
-
             }
         });
 
@@ -172,31 +173,30 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
-                if(!zakazivanje_termina.getText().toString().equals(getString(R.string.zakazan_termin))) {
-                    intent.putExtra(TERMIN_EXPORT_KEY, zakazivanje_termina.getText().toString());
+                if(!appointment_display.getText().toString().equals(getString(R.string.no_appointment))) {
+                    intent.putExtra(APPOINTMENT_EXPORT_KEY, appointment_display.getText().toString());
                 }
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(TEXT_KEY, zakazivanje_termina.getText().toString());
+                editor.putString(TEXT_KEY, appointment_display.getText().toString());
                 editor.apply();
                 startActivity(intent);
             }
         });
     }
-    // Kada se vratimo na nas Activity za zakazivanje ostace nam prikaz zakazanog termin
+
+    // When we return to our scheduling Activity, the scheduled appointment display will remain
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        TextView zakazivanje_termina = findViewById(R.id.prikaz_termina);
-        outState.putString(TEXT_STATE_KEY, zakazivanje_termina.getText().toString());
+        TextView appointment_display = findViewById(R.id.prikaz_termina);
+        outState.putString(TEXT_STATE_KEY, appointment_display.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        TextView zakazivanje_termina = findViewById(R.id.prikaz_termina);
-        String text = savedInstanceState.getString(TEXT_STATE_KEY, getString(R.string.zakazan_termin));
-        zakazivanje_termina.setText(text);
+        TextView appointment_display = findViewById(R.id.prikaz_termina);
+        String text = savedInstanceState.getString(TEXT_STATE_KEY, getString(R.string.no_appointment));
+        appointment_display.setText(text);
     }
-
-
 }

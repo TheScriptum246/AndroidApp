@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_main"
+    android:background="@color/soft_pink"
     android:fadingEdge="vertical">
 
     <androidx.constraintlayout.widget.Guideline
@@ -18,14 +18,14 @@
         android:id="@+id/bottom_nav"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#DD9E75"
+        android:background="@color/rose_gold"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="20dp"
         app:itemIconSize="60dp"
-        app:itemIconTint="@color/black"
+        app:itemIconTint="@color/pink_dark"
         app:itemPaddingBottom="10dp"
         app:itemPaddingTop="20dp"
-        app:itemTextColor="#0E2C11"
+        app:itemTextColor="@color/pink_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -41,25 +41,46 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
 
+    <!-- Welcome Title -->
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/welcome_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/username"
-        android:textSize="30sp"
+        android:fontFamily="@font/agbalumo"
+        android:text="Welcome to Pretty Nails!"
+        android:textColor="@color/pink_dark"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/username"
+        android:textColor="@color/pink_dark"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_title" />
+
     <EditText
         android:id="@+id/username_id"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:autofillHints="username"
+        android:background="@color/white"
         android:ems="10"
         android:hint="@string/username"
         android:inputType="text"
+        android:padding="12dp"
+        android:textColor="@color/pink_dark"
+        android:textColorHint="@color/pink_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18"
@@ -69,8 +90,10 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/password"
-        android:textSize="30sp"
+        android:textColor="@color/pink_dark"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,12 +101,17 @@
 
     <EditText
         android:id="@+id/password_id"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:autofillHints="password"
+        android:background="@color/white"
         android:hint="@string/password"
         android:ems="10"
         android:inputType="textPassword"
+        android:padding="12dp"
+        android:textColor="@color/pink_dark"
+        android:textColorHint="@color/pink_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
@@ -91,39 +119,52 @@
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/password_id"
-        tools:layout_editor_absoluteX="-2dp">
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_id">
 
         <Button
             android:id="@+id/signup"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_margin="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#A06666"
+            android:backgroundTint="@color/purple_accent"
             android:text="@string/signup"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_margin="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#A16666"
+            android:backgroundTint="@color/pink_primary"
             android:text="@string/login"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
+    <!-- Decorative text for nail salon atmosphere -->
+    <TextView
+        android:id="@+id/tagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.44" />
-
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/agbalumo"
+        android:text="✨ Your nails, our passion ✨"
+        android:textColor="@color/purple_accent"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

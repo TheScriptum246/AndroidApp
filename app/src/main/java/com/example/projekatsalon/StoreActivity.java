@@ -16,27 +16,28 @@ import java.util.Map;
 
 public class StoreActivity extends AppCompatActivity {
 
-    //Hashmapa koju koristimo da vodimo evidenciju stanja korpe.
-    //Kljuc predstavlja proizvod a value koliko ih ima u korpi
-    private HashMap<String, Integer> proizvodi = new HashMap<>();
+    //HashMap to track shopping cart state.
+    //Key represents product and value shows quantity in cart
+    private HashMap<String, Integer> products = new HashMap<>();
     ArrayList<TextView> textViews = new ArrayList<>();
     private ScrollView scrollView;
 
 
-    private void UpdateCart(TextView korpa){
+    private void UpdateCart(TextView cart){
         StringBuilder stringBuilder = new StringBuilder();
-        for(Map.Entry<String, Integer> entry: proizvodi.entrySet()){
+        for(Map.Entry<String, Integer> entry: products.entrySet()){
             if(entry.getValue() != 0) {
                 stringBuilder.append(entry.getKey()).append(": x").append(String.valueOf(entry.getValue())).append("\n");
             }
         }
-        korpa.setText(stringBuilder.toString());
+        cart.setText(stringBuilder.toString());
     }
 
-    private void Saltaj(String query){
+    private void ScrollToProduct(String query){
         for(TextView textView: textViews){
-            if (textView.getText().toString().equalsIgnoreCase(query)) {
+            if (textView.getText().toString().toLowerCase().contains(query.toLowerCase())) {
                 scrollView.post(() -> scrollView.scrollTo(0, textView.getTop()));
+                break;
             }
         }
     }
@@ -47,108 +48,104 @@ public class StoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
+        TextView cart = findViewById(R.id.korpa);
 
+        //Getting product names
+        String nailPolish_name = getString(R.string.nail_polish_set);
+        String cuticleCare_name = getString(R.string.cuticle_care);
+        String manicureKit_name = getString(R.string.manicure_starter_kit);
+        String nailFiles_name = getString(R.string.nail_files);
+        String nailLamp_name = getString(R.string.nail_lamp);
+        String handCream_name = getString(R.string.hand_cream);
+        String nailArt_name = getString(R.string.nail_art_tools);
 
-        TextView korpa = findViewById(R.id.korpa);
+        //Adding products and their quantities to map
+        products.put(nailPolish_name,0);
+        products.put(cuticleCare_name,0);
+        products.put(manicureKit_name,0);
+        products.put(nailFiles_name,0);
+        products.put(nailLamp_name,0);
+        products.put(handCream_name,0);
+        products.put(nailArt_name,0);
 
-        //Prikupljanje imena proizvoda
-        String makaze_ime = getString(R.string.super_duper_makaze);
-        String sampon_ime = getString(R.string.sampon_za_kosu);
-        String set_ime = getString(R.string.tri_plus_jedan_gratis_set);
-        String vikleri_ime = getString(R.string.vikleri);
-        String masinica_ime = getString(R.string.masinica_za_sisanje);
-        String ulje_ime = getString(R.string.ulje_za_kosu);
-        String stalak_ime = getString(R.string.stalak_za_brijac);
+        HashMap<String, Integer> defaultMap = new HashMap<>(products);
 
+        //Listeners for adding items to map, first catching all buttons, then onClick logic
 
-        //Dodavanje proizvoda i koliko ih ima u mapi
-        proizvodi.put(makaze_ime,0);
-        proizvodi.put(sampon_ime,0);
-        proizvodi.put(set_ime,0);
-        proizvodi.put(vikleri_ime,0);
-        proizvodi.put(masinica_ime,0);
-        proizvodi.put(ulje_ime,0);
-        proizvodi.put(stalak_ime,0);
+        Button nailPolish_button = findViewById(R.id.button_makaze);
+        Button cuticleCare_button = findViewById(R.id.button_sampon);
+        Button manicureKit_button = findViewById(R.id.button_set);
+        Button nailFiles_button = findViewById(R.id.button_vikleri);
+        Button nailLamp_button = findViewById(R.id.button_masinica);
+        Button handCream_button = findViewById(R.id.button_ulje);
+        Button nailArt_button = findViewById(R.id.button_stalak);
+        Button clear_button = findViewById(R.id.obrisi_korpu);
 
-        HashMap<String, Integer> defaultMap = new HashMap<>(proizvodi);
-
-
-        //Listeneri za dodavanje item-a u mapu, prvo hvatanje svih dugmica, pa onda logika onClick
-
-        Button makaze_button = findViewById(R.id.button_makaze);
-        Button sampon_button = findViewById(R.id.button_sampon);
-        Button set_button = findViewById(R.id.button_set);
-        Button vikleri_button = findViewById(R.id.button_vikleri);
-        Button masinica_button = findViewById(R.id.button_masinica);
-        Button ulje_button = findViewById(R.id.button_ulje);
-        Button stalak_button = findViewById(R.id.button_stalak);
-        Button obrisi_button = findViewById(R.id.obrisi_korpu);
-
-        makaze_button.setOnClickListener(new View.OnClickListener() {
+        nailPolish_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = proizvodi.get(makaze_ime) + 1;
-                proizvodi.put(makaze_ime, value);
-                UpdateCart(korpa);
+                int value = products.get(nailPolish_name) + 1;
+                products.put(nailPolish_name, value);
+                UpdateCart(cart);
             }
         });
-        sampon_button.setOnClickListener(new View.OnClickListener() {
+        cuticleCare_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = proizvodi.get(sampon_ime) + 1;
-                proizvodi.put(sampon_ime, value);
-                UpdateCart(korpa);
+                int value = products.get(cuticleCare_name) + 1;
+                products.put(cuticleCare_name, value);
+                UpdateCart(cart);
             }
         });
-        set_button.setOnClickListener(new View.OnClickListener() {
+        manicureKit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = proizvodi.get(set_ime) + 1;
-                proizvodi.put(set_ime, value);
-                UpdateCart(korpa);
+                int value = products.get(manicureKit_name) + 1;
+                products.put(manicureKit_name, value);
+                UpdateCart(cart);
             }
         });
-        vikleri_button.setOnClickListener(new View.OnClickListener() {
+        nailFiles_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = proizvodi.get(vikleri_ime) + 1;
-                proizvodi.put(vikleri_ime, value);
-                UpdateCart(korpa);
+                int value = products.get(nailFiles_name) + 1;
+                products.put(nailFiles_name, value);
+                UpdateCart(cart);
             }
         });
-        masinica_button.setOnClickListener(new View.OnClickListener() {
+        nailLamp_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = proizvodi.get(masinica_ime) + 1;
-                proizvodi.put(masinica_ime, value);
-                UpdateCart(korpa);
+                int value = products.get(nailLamp_name) + 1;
+                products.put(nailLamp_name, value);
+                UpdateCart(cart);
             }
         });
-        ulje_button.setOnClickListener(new View.OnClickListener() {
+        handCream_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = proizvodi.get(ulje_ime) + 1;
-                proizvodi.put(ulje_ime, value);
-                UpdateCart(korpa);
+                int value = products.get(handCream_name) + 1;
+                products.put(handCream_name, value);
+                UpdateCart(cart);
             }
         });
-        stalak_button.setOnClickListener(new View.OnClickListener() {
+        nailArt_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = proizvodi.get(stalak_ime) + 1;
-                proizvodi.put(stalak_ime, value);
-                UpdateCart(korpa);
+                int value = products.get(nailArt_name) + 1;
+                products.put(nailArt_name, value);
+                UpdateCart(cart);
             }
         });
 
-        obrisi_button.setOnClickListener(new View.OnClickListener() {
+        clear_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                proizvodi = defaultMap;
-                korpa.setText(getString(R.string.korpa_sadrzaj));
+                products.clear();
+                products.putAll(defaultMap);
+                cart.setText(getString(R.string.cart_contents));
             }
         });
-
 
         scrollView = findViewById(R.id.scrollV);
         textViews.add(findViewById(R.id.makaze_id));
@@ -161,11 +158,10 @@ public class StoreActivity extends AppCompatActivity {
 
         SearchView searchView = findViewById(R.id.search_id);
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Saltaj(query);
+                ScrollToProduct(query);
                 return true;
             }
 
@@ -175,8 +171,8 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
-        Button nazad = findViewById(R.id.nazad);
-        nazad.setOnClickListener(new View.OnClickListener() {
+        Button back = findViewById(R.id.nazad);
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StoreActivity.this, MainActivity.class);
@@ -192,6 +188,5 @@ public class StoreActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }

@@ -1,6 +1,5 @@
 package com.example.projekatsalon;
 
-
 import android.os.Bundle;
 import android.content.Intent;
 import androidx.annotation.NonNull;
@@ -27,13 +26,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.schedule){
                 if(!logged){
-                    Toast.makeText(this, "Niste logovani", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(this, "Please log in first", Toast.LENGTH_SHORT).show();
                 }else {
                     Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
                     intent.putExtra(USER_EXPORT_KEY, logged_username);
@@ -43,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if(item.getItemId() == R.id.store){
                 if(!logged){
-                    Toast.makeText(this, "Niste logovani", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please log in first", Toast.LENGTH_SHORT).show();
                 }else {
                     Intent intent = new Intent(MainActivity.this, StoreActivity.class);
                     intent.putExtra(USER_EXPORT_KEY, logged_username);
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        //Hvatanje username i password polja
+        //Getting username and password fields
         EditText username_field = findViewById(R.id.username_id);
         EditText password_field = findViewById(R.id.password_id);
 
@@ -63,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!(TextUtils.isDigitsOnly(password_field.getText().toString()))){
-                    Toast.makeText(MainActivity.this, "Pass moraju biti brojevi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Password must be numbers only", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(logged){
-                    Toast.makeText(MainActivity.this, "Vec ste logovani", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "You are already logged in", Toast.LENGTH_SHORT).show();
                 }else {
                     try {
                         MyDatabaseHelper myDB = new MyDatabaseHelper(MainActivity.this);
@@ -84,16 +81,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!(TextUtils.isDigitsOnly(password_field.getText().toString()))){
-                    Toast.makeText(MainActivity.this, "Pass moraju biti brojevi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Password must be numbers only", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 try{
                     MyDatabaseHelper myDB = new MyDatabaseHelper(MainActivity.this);
                     logged_username = myDB.LogInUser(username_field.getText().toString(), Integer.parseInt(password_field.getText().toString()));
                     if (!(logged_username.equals(""))){
-                    logged = true;
-                }
-            }catch (NullPointerException e){e.printStackTrace();}
+                        logged = true;
+                    }
+                }catch (NullPointerException e){e.printStackTrace();}
             }
         });
     }

@@ -9,11 +9,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
-    public static final String DATABASE_NAME = "baza.db";
+    public static final String DATABASE_NAME = "nail_salon.db";
     public static final int DATABASE_VERSION = 1;
     public static final String COLUMN_ID = "_id";
 
@@ -21,12 +20,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String USER_USERNAME = "username";
     public static final String USER_PASSWORD = "password";
 
-    public static final String SCHEDULE_TABLE_NAME = "schedules";
+    public static final String SCHEDULE_TABLE_NAME = "appointments";
     public static final String SCHEDULE_DATE = "date";
     public static final String SCHEDULE_TIME = "time";
-    public static final String SCHEDULE_HAIRDRESSER = "hairdresser";
-
-
+    public static final String SCHEDULE_TECHNICIAN = "technician";
 
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,10 +40,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + SCHEDULE_TABLE_NAME + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
                         SCHEDULE_DATE + " TEXT," +
                         SCHEDULE_TIME + " TEXT," +
-                        SCHEDULE_HAIRDRESSER + " TEXT);";
+                        SCHEDULE_TECHNICIAN + " TEXT);";
         db.execSQL(query1);
         db.execSQL(query2);
-
     }
 
     @Override
@@ -55,15 +51,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //Proveravamo podatke koje korisnik unosi za Login
+    //Check user data for Login
     String LogInUser(String username, int password){
-
         if((checkPassword(username, password).equals(""))){
             return "";
         }
         return checkPassword(username, password);
     }
-    //Proveravamo podatke koje korisnik unosi za SignUp i da li korisnik vec postoji
+
+    //Check user data for SignUp and if user already exists
     void SignUpUser(String username, int password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -76,12 +72,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             result = db.insert(USER_TABLE_NAME, null, cv);
         }
         if(result == -1){
-            Toast.makeText(context,"failed",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Registration failed",Toast.LENGTH_SHORT).show();
         } else{
-            Toast.makeText(context,"Added successfully",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Account created successfully!",Toast.LENGTH_SHORT).show();
         }
     }
-    //Proveravamo da li korisnik sa zadatim imenom vec postoji u bazi (cursor objekat koji omogucava iteraciju)
+
+    //Check if user with given username already exists in database (cursor object for iteration)
     boolean checkUsers(String username){
         String query = "SELECT " + USER_USERNAME + " FROM " + USER_TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -106,38 +103,34 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return true;
     }
-    //Provera da li korisnik sa datim imenom i passwordom postoji u bazi
+
+    //Check if user with given username and password exists in database
     String checkPassword(String username, int password){
         String query = "SELECT * FROM " + USER_TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
         if(db != null){
-           cursor = db.rawQuery(query, null);
+            cursor = db.rawQuery(query, null);
         }else{
-            Toast.makeText(context, "Greska", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Database error", Toast.LENGTH_SHORT).show();
             return "";
         }
 
         if(cursor.getCount() == 0){
-            Toast.makeText(context, "Greska", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Invalid credentials", Toast.LENGTH_SHORT).show();
             cursor.close();
             return "";
         }else{
             while(cursor.moveToNext()){
-                System.out.println(cursor.getString(2) + " cursor pass");
-                System.out.println(cursor.getString(1)+ " cursor ime");
-                System.out.println(username + " input username");
-                System.out.println(password + " input pass");
                 if(username.equals(cursor.getString(1)) && String.valueOf(password).equals(cursor.getString(2))){
-                    Toast.makeText(context, "Uspesno ste se logovali", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
                     return cursor.getString(0);
                 }
             }
         }
         cursor.close();
-        Toast.makeText(context, "Greska", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Invalid username or password", Toast.LENGTH_SHORT).show();
         return "";
     }
-
 }

@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_schedule">
+    android:background="@color/soft_pink">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/agbalumo"
-        android:text="@string/schedule_naslov"
-        android:textSize="20sp"
+        android:text="@string/schedule_title_text"
+        android:textColor="@color/pink_dark"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +31,8 @@
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
@@ -44,6 +48,9 @@
         android:id="@+id/radioGroup"
         android:layout_width="203dp"
         android:layout_height="102dp"
+        android:background="@color/white"
+        android:padding="8dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/spinner">
@@ -53,19 +60,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/first_time_option" />
+            android:textColor="@color/pink_dark"
+            android:buttonTint="@color/pink_primary"
+            android:text="@string/first_technician_option" />
 
         <RadioButton
             android:id="@+id/radioButton5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/second_time_option" />
+            android:textColor="@color/pink_dark"
+            android:buttonTint="@color/pink_primary"
+            android:text="@string/second_technician_option" />
     </RadioGroup>
 
     <Button
         android:id="@+id/nazad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/pink_light"
+        android:textColor="@color/pink_dark"
         android:text="@string/go_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -75,7 +88,8 @@
         android:id="@+id/zakazi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/zakazi"
+        android:backgroundTint="@color/pink_primary"
+        android:text="@string/book_appointment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -85,7 +99,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/zakazan_termin_naslov"
+        android:fontFamily="@font/agbalumo"
+        android:textColor="@color/pink_dark"
+        android:textStyle="bold"
+        android:text="@string/current_appointment_title"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
@@ -94,8 +111,11 @@
         android:id="@+id/prikaz_termina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        android:text="@string/zakazan_termin"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:textColor="@color/pink_dark"
+        android:text="@string/no_appointment"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -106,6 +126,8 @@
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -123,7 +145,8 @@
         android:id="@+id/otkazi_termin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/b_otkazivanje_termina"
+        android:backgroundTint="@color/purple_accent"
+        android:text="@string/cancel_appointment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
