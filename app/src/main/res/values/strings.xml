@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">FrizerskiSalon</string>
+
+    <string name="store_title">Store</string>
+    <string name="schedule_title">Schedule</string>
+
+    <string name="schedule_id">schedule</string>
+    <string name="store_id">store</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
+
+    <string name="stalak_za_brijac">Stalak za Brijac</string>
+    <string name="vikleri">Vikleri</string>
+    <string name="ulje_za_kosu">Ulje za Kosu</string>
+    <string name="super_duper_makaze">Super Duper Makaze</string>
+    <string name="tri_plus_jedan_gratis_set">Tri Plus Jedan Gratis Set</string>
+    <string name="sampon_za_kosu">Sampon za Kosu</string>
+    <string name="masinica_za_sisanje">Masinica za Sisanje</string>
+    <string name="masazer_za_teme_glave">Masazer za teme glave</string>
+
+    <string name="stalak_price">2700RSD</string>
+    <string name="vikleri_price">450RSD</string>
+    <string name="ulje_price">890RSD</string>
+    <string name="makaze_price">1500RSD</string>
+    <string name="set_price">1299RSD</string>
+    <string name="sampon_price">570RSD</string>
+    <string name="masinica_price">6000RSD</string>
+    <string name="masazer_price">1599RSD</string>
+
+    <string name="dodaj_u_korpu">Dodaj u korpu</string>
+
+    <string name="korpa_sadrzaj">Nemate nista u korpi</string>
+    <string name="obrisi_korpu">Obrisi korpu</string>
+    <string name="checkout">Checkout</string>
+
+
+    <string name="schedule_naslov">Zakazivanje</string>
+    <string name="first_time_option">Kod Pere Perica</string>
+    <string name="second_time_option">Kod Mike Mikica</string>
+    <string name="vreme_zakazivanja_label">Vreme zakazivanja</string>
+    <string name="go_back">Nazad</string>
+    <string name="zakazi">Zakazi</string>
+    <string name="zakazan_termin_naslov">Vec zakazan termin</string>
+    <string name="zakazan_termin">Nemate zakazan termin</string>
+    <string name="b_otkazivanje_termina">Otkazi termin</string>
+
+</resources>

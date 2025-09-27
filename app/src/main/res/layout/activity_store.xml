@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/l_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <SearchView
+                android:id="@+id/search_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/makaze_id"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:text="@string/super_duper_makaze"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="225dp"
+                android:contentDescription="@string/super_duper_makaze"
+                app:srcCompat="@drawable/makaze" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/makaze_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_makaze"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:layout_marginRight="120dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/dodaj_u_korpu" />
+
+            <TextView
+                android:id="@+id/sampon_id"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:text="@string/sampon_za_kosu"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="255dp"
+                android:contentDescription="@string/sampon_za_kosu"
+                app:srcCompat="@drawable/sampon_za_kosu" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/sampon_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_sampon"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginLeft="120dp"
+                android:layout_marginRight="120dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/dodaj_u_korpu" />
+
+            <TextView
+                android:id="@+id/set_id"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:text="@string/tri_plus_jedan_gratis_set"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="255dp"
+                android:contentDescription="@string/tri_plus_jedan_gratis_set"
+                app:srcCompat="@drawable/tri_plus_jedan_gratis_set" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/set_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:layout_marginRight="120dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/dodaj_u_korpu" />
+
+
+            <TextView
+                android:id="@+id/vikleri_id"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:text="@string/vikleri"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="225dp"
+                android:contentDescription="@string/vikleri"
+                app:srcCompat="@drawable/vikleri" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/vikleri_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_vikleri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:layout_marginRight="120dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/dodaj_u_korpu" />
+
+            <TextView
+                android:id="@+id/masinica_id"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:text="@string/masinica_za_sisanje"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="255dp"
+                android:contentDescription="@string/masinica_price"
+                app:srcCompat="@drawable/masinica_za_sisanje" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/masinica_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_masinica"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="120dp"
+                android:layout_marginRight="120dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/dodaj_u_korpu" />
+
+            <TextView
+                android:id="@+id/ulje_id"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:text="@string/ulje_za_kosu"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="match_parent"
+                android:layout_height="255dp"
+                android:contentDescription="@string/masinica_za_sisanje"
+                app:srcCompat="@drawable/ulje_za_kosu" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/ulje_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_ulje"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="120dp"
+                android:layout_marginRight="120dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/dodaj_u_korpu" />
+
+            <TextView
+                android:id="@+id/stalak_id"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:text="@string/stalak_za_brijac"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="match_parent"
+                android:layout_height="255dp"
+                android:contentDescription="@string/ulje_za_kosu"
+                app:srcCompat="@drawable/stalak_za_brijac" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/stalak_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_stalak"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="120dp"
+                android:layout_marginRight="120dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/dodaj_u_korpu" />
+
+            <TextView
+                android:id="@+id/korpa"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:fontFamily="@font/agbalumo"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/korpa_sadrzaj"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/obrisi_korpu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:text="@string/obrisi_korpu" />
+
+            <LinearLayout
+                android:id="@+id/endbuttons"
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <Button
+                    android:id="@+id/nazad"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/go_back" />
+
+                <Button
+                    android:id="@+id/checkout"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/checkout" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="206dp" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
