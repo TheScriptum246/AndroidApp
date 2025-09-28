@@ -1,97 +1,192 @@
 package com.example.projekatsalon;
 
-import android.os.Bundle;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.projekatsalon.R;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static boolean logged;
-    private static String logged_username;
+    private static boolean isLoggedIn = false;
+    private static String loggedUsername = "";
 
-    private static final String USER_EXPORT_KEY = "user_export_key";
+    private EditText usernameInput, passwordInput;
+    private Button loginButton, signupButton;
+    private MyDatabaseHelper dbHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Hide the status bar and action bar
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.schedule){
-                if(!logged){
-                    Toast.makeText(this, "Please log in first", Toast.LENGTH_SHORT).show();
-                }else {
-                    Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
-                    intent.putExtra(USER_EXPORT_KEY, logged_username);
-                    startActivity(intent);
-                }
-                return true;
+        // Initialize database helper
+        dbHelper = new MyDatabaseHelper(this);
+
+        // Initialize views
+        initializeViews();
+
+        // Setup button listeners
+        setupButtonListeners();
+
+        // Check if user is already logged in and redirect
+        if (isLoggedIn && !loggedUsername.isEmpty()) {
+            redirectToStore();
+        }
+    }
+
+    private void initializeViews() {
+        usernameInput = findViewById(R.id.username_input);
+        passwordInput = findViewById(R.id.password_input);
+        loginButton = findViewById(R.id.login_button);
+        signupButton = findViewById(R.id.signup_button);
+    }
+
+    private void setupButtonListeners() {
+        loginButton.setOnClickListener(v -> handleLogin());
+        signupButton.setOnClickListener(v -> handleSignup());
+    }
+
+    private void handleLogin() {
+        String username = getInputText(usernameInput);
+        String password = getInputText(passwordInput);
+
+        if (!validateInputs(username, password)) {
+            return;
+        }
+
+        try {
+            int passwordInt = Integer.parseInt(password);
+            String loginResult = dbHelper.LogInUser(username, passwordInt);
+
+            if (!loginResult.isEmpty()) {
+                // Login successful
+                isLoggedIn = true;
+                loggedUsername = username;
+
+                // Show success message briefly before redirecting
+                Toast.makeText(this, "Welcome back, " + username + "!", Toast.LENGTH_SHORT).show();
+
+                // Redirect to store after a short delay
+                loginButton.postDelayed(this::redirectToStore, 1000);
             }
-            if(item.getItemId() == R.id.store){
-                if(!logged){
-                    Toast.makeText(this, "Please log in first", Toast.LENGTH_SHORT).show();
-                }else {
-                    Intent intent = new Intent(MainActivity.this, StoreActivity.class);
-                    intent.putExtra(USER_EXPORT_KEY, logged_username);
-                    startActivity(intent);
-                }
-                return true;
-            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Password must be numbers only", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleSignup() {
+        String username = getInputText(usernameInput);
+        String password = getInputText(passwordInput);
+
+        if (!validateInputs(username, password)) {
+            return;
+        }
+
+        if (isLoggedIn) {
+            Toast.makeText(this, "You are already logged in as " + loggedUsername, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            int passwordInt = Integer.parseInt(password);
+            dbHelper.SignUpUser(username, passwordInt);
+
+            // Clear the input fields after successful signup
+            clearInputFields();
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Password must be numbers only", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean validateInputs(String username, String password) {
+        if (TextUtils.isEmpty(username)) {
+            usernameInput.setError("Username is required");
+            usernameInput.requestFocus();
             return false;
-        });
+        }
 
-        //Getting username and password fields
-        EditText username_field = findViewById(R.id.username_id);
-        EditText password_field = findViewById(R.id.password_id);
+        if (TextUtils.isEmpty(password)) {
+            passwordInput.setError("Password is required");
+            passwordInput.requestFocus();
+            return false;
+        }
 
-        Button signup = findViewById(R.id.signup);
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!(TextUtils.isDigitsOnly(password_field.getText().toString()))){
-                    Toast.makeText(MainActivity.this, "Password must be numbers only", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(logged){
-                    Toast.makeText(MainActivity.this, "You are already logged in", Toast.LENGTH_SHORT).show();
-                }else {
-                    try {
-                        MyDatabaseHelper myDB = new MyDatabaseHelper(MainActivity.this);
-                        myDB.SignUpUser(username_field.getText().toString(), Integer.parseInt(password_field.getText().toString()));
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        if (!TextUtils.isDigitsOnly(password)) {
+            passwordInput.setError("Password must contain only numbers");
+            passwordInput.requestFocus();
+            return false;
+        }
 
-        Button login = findViewById(R.id.login);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!(TextUtils.isDigitsOnly(password_field.getText().toString()))){
-                    Toast.makeText(MainActivity.this, "Password must be numbers only", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                try{
-                    MyDatabaseHelper myDB = new MyDatabaseHelper(MainActivity.this);
-                    logged_username = myDB.LogInUser(username_field.getText().toString(), Integer.parseInt(password_field.getText().toString()));
-                    if (!(logged_username.equals(""))){
-                        logged = true;
-                    }
-                }catch (NullPointerException e){e.printStackTrace();}
-            }
-        });
+        if (password.length() < 4) {
+            passwordInput.setError("Password must be at least 4 digits");
+            passwordInput.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private String getInputText(EditText editText) {
+        return editText.getText() != null ? editText.getText().toString().trim() : "";
+    }
+
+    private void clearInputFields() {
+        if (usernameInput != null) usernameInput.setText("");
+        if (passwordInput != null) passwordInput.setText("");
+    }
+
+    private void redirectToStore() {
+        Intent intent = new Intent(MainActivity.this, StoreActivity.class);
+        intent.putExtra("user_export_key", loggedUsername);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish(); // Close the main activity
+    }
+
+    // Static methods to manage login state across activities
+    public static boolean isUserLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public static String getLoggedUsername() {
+        return loggedUsername;
+    }
+
+    public static void logout() {
+        isLoggedIn = false;
+        loggedUsername = "";
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (dbHelper != null) {
+            dbHelper.close();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Override back button to prevent going back to login after successful login
+        if (isLoggedIn) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

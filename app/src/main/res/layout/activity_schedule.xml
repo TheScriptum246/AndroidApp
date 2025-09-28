@@ -6,150 +6,295 @@
     android:layout_height="match_parent"
     android:background="@color/soft_pink">
 
+    <!-- Header -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/schedule_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/agbalumo"
-        android:text="@string/schedule_title_text"
+        android:text="Book Your Appointment"
         android:textColor="@color/pink_dark"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="73dp" />
-
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="205dp" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="203dp"
-        android:layout_height="102dp"
-        android:background="@color/white"
-        android:padding="8dp"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/spinner">
-
-        <RadioButton
-            android:id="@+id/radioButton4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:textColor="@color/pink_dark"
-            android:buttonTint="@color/pink_primary"
-            android:text="@string/first_technician_option" />
-
-        <RadioButton
-            android:id="@+id/radioButton5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink_dark"
-            android:buttonTint="@color/pink_primary"
-            android:text="@string/second_technician_option" />
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/nazad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/pink_light"
-        android:textColor="@color/pink_dark"
-        android:text="@string/go_back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-    <Button
-        android:id="@+id/zakazi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/pink_primary"
-        android:text="@string/book_appointment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/agbalumo"
-        android:textColor="@color/pink_dark"
-        android:textStyle="bold"
-        android:text="@string/current_appointment_title"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
-
-    <TextView
-        android:id="@+id/prikaz_termina"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/white"
-        android:padding="12dp"
-        android:textColor="@color/pink_dark"
-        android:text="@string/no_appointment"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-    <Spinner
-        android:id="@+id/spinner"
+    <!-- Main Content ScrollView -->
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        android:layout_margin="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_section"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="481dp" />
-
-    <Button
-        android:id="@+id/otkazi_termin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_accent"
-        android:text="@string/cancel_appointment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prikaz_termina" />
+        app:layout_constraintTop_toBottomOf="@+id/schedule_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Calendar Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/agbalumo"
+                        android:gravity="center"
+                        android:text="Select Date"
+                        android:textColor="@color/pink_dark"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
+
+                    <CalendarView
+                        android:id="@+id/calendarView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Booking Options Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <!-- Time Selection Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/agbalumo"
+                            android:gravity="center"
+                            android:text="Available Times"
+                            android:textColor="@color/pink_dark"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="12dp" />
+
+                        <Spinner
+                            android:id="@+id/time_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/spinner_background"
+                            android:padding="12dp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Technician Selection Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/agbalumo"
+                            android:gravity="center"
+                            android:text="Choose Technician"
+                            android:textColor="@color/pink_dark"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="12dp" />
+
+                        <RadioGroup
+                            android:id="@+id/technician_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/radio_sophia"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:textColor="@color/pink_dark"
+                                android:buttonTint="@color/pink_primary"
+                                android:text="@string/first_technician_option"
+                                android:padding="8dp" />
+
+                            <RadioButton
+                                android:id="@+id/radio_emma"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/pink_dark"
+                                android:buttonTint="@color/pink_primary"
+                                android:text="@string/second_technician_option"
+                                android:padding="8dp" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <!-- Current Appointment Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/agbalumo"
+                        android:gravity="center"
+                        android:text="@string/current_appointment_title"
+                        android:textColor="@color/pink_dark"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/pink_light"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:id="@+id/appointment_display"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/soft_pink"
+                        android:padding="16dp"
+                        android:textColor="@color/pink_dark"
+                        android:textSize="14sp"
+                        android:text="@string/no_appointment"
+                        android:gravity="center"
+                        android:fontFamily="@font/agbalumo"
+                        android:layout_marginBottom="16dp" />
+
+                    <Button
+                        android:id="@+id/cancel_appointment_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:backgroundTint="@color/purple_accent"
+                        android:text="@string/cancel_appointment"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/agbalumo"
+                        app:cornerRadius="12dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Section -->
+    <LinearLayout
+        android:id="@+id/bottom_section"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="384dp"
+            android:layout_height="76dp"
+            android:layout_margin="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/logout_button"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/pink_light"
+                android:fontFamily="@font/agbalumo"
+                android:text="Logout"
+                android:textColor="@color/pink_dark"
+                android:textSize="16sp"
+                app:cornerRadius="16dp" />
+
+            <Button
+                android:id="@+id/book_appointment_button"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/pink_primary"
+                android:fontFamily="@font/agbalumo"
+                android:text="@string/book_appointment"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="16dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Navigation Bar Container -->
+    <FrameLayout
+        android:id="@+id/navigation_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

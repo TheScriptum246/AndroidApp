@@ -3,200 +3,245 @@ package com.example.projekatsalon;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.window.OnBackInvokedDispatcher;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 
 public class ScheduleActivity extends AppCompatActivity {
 
     private static final String TEXT_STATE_KEY = "text_state_key";
     private static final String USER_EXPORT_KEY = "user_export_key";
-
     private static final String PREFS_NAME = "PREFS";
     private static final String TEXT_KEY = "appointment_key";
 
-    private String logged_user;
+    private String loggedUser;
+    private NavigationHelper navigationHelper;
+
+    // UI Components
+    private CalendarView calendarView;
+    private Spinner timeSpinner;
+    private RadioGroup technicianRadioGroup;
+    private TextView appointmentDisplay;
+    private Button bookAppointmentButton, cancelAppointmentButton, logoutButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+        // Get current user from intent
         Intent intent = getIntent();
-        logged_user = intent.getStringExtra(USER_EXPORT_KEY);
+        loggedUser = intent.getStringExtra(USER_EXPORT_KEY);
 
-        TextView appointment_display = findViewById(R.id.prikaz_termina);
+        initializeViews();
+        setupNavigation();
+        loadSavedAppointment();
+        setupCalendar();
+        setupTimeSpinner();
+        setupButtons();
+        setupBackPressHandler();
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+    }
+
+    private void initializeViews() {
+        calendarView = findViewById(R.id.calendarView);
+        timeSpinner = findViewById(R.id.time_spinner);
+        technicianRadioGroup = findViewById(R.id.technician_radio_group);
+        appointmentDisplay = findViewById(R.id.appointment_display);
+        bookAppointmentButton = findViewById(R.id.book_appointment_button);
+        cancelAppointmentButton = findViewById(R.id.cancel_appointment_button);
+        logoutButton = findViewById(R.id.logout_button);
+    }
+
+    private void setupNavigation() {
+        navigationHelper = new NavigationHelper(this, loggedUser);
+        FrameLayout navigationContainer = findViewById(R.id.navigation_container);
+        View navView = navigationHelper.setupNavigation(navigationContainer);
+        navigationContainer.addView(navView);
+    }
+
+    private void loadSavedAppointment() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String savedText = sharedPreferences.getString(TEXT_KEY, "No appointment scheduled");
-        appointment_display.setText(savedText);
+        String savedText = sharedPreferences.getString(TEXT_KEY, getString(R.string.no_appointment));
+        appointmentDisplay.setText(savedText);
+    }
 
-        // Simulating already booked appointments
-        // This is a list of Integers, representing times when booking is not possible
-        List<Integer> Scheduled_times= new ArrayList<>();
-        Scheduled_times.add(9);
-        Scheduled_times.add(11);
-        Scheduled_times.add(14);
-        Scheduled_times.add(16);
-
-        // Working hours from 9 AM to 6 PM, each appointment is 1.5 hours for nail services
-        List<String> Available_times = new ArrayList<>();
-        int[] startTimes = {9, 11, 13, 15, 17}; // 9:00, 11:00, 1:00, 3:00, 5:00
-        String[] timeSlots = {"9:00 AM - 10:30 AM", "11:00 AM - 12:30 PM", "1:00 PM - 2:30 PM",
-                "3:00 PM - 4:30 PM", "5:00 PM - 6:30 PM"};
-
-        for (int i = 0; i < startTimes.length; i++) {
-            if(!Scheduled_times.contains(startTimes[i])){
-                Available_times.add(timeSlots[i]);
-            }
-        }
-
-        //Adding to DropDown
-        if(Available_times.isEmpty()){
-            Available_times.add("No available appointments :(");
-        }
-        Spinner spinner = findViewById(R.id.spinner);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, Available_times);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0);
-
-        //Setting up calendar
-        CalendarView calendarView = findViewById(R.id.calendarView);
-        //Minimum date (today)
+    private void setupCalendar() {
+        // Set minimum date (today)
         Calendar minDate = Calendar.getInstance();
         calendarView.setMinDate(minDate.getTimeInMillis());
-        //Maximum date (1 month ahead)
+
+        // Set maximum date (1 month ahead)
         Calendar maxDate = Calendar.getInstance();
         maxDate.add(Calendar.MONTH, 1);
         calendarView.setMaxDate(maxDate.getTimeInMillis());
-        //Set today as selected
+
+        // Set today as selected
         calendarView.setDate(minDate.getTimeInMillis(), false, true);
 
-        //User can freely choose desired date
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, dayOfMonth);
-                long millis = calendar.getTimeInMillis();
-                calendarView.setDate(millis, true, true);
-            }
+        // Handle date selection
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, month, dayOfMonth);
+            long millis = calendar.getTimeInMillis();
+            calendarView.setDate(millis, true, true);
         });
+    }
 
-        //Getting Radio Group from layout
-        RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        // Button captures data from calendar, spinner and Radio Group and places it
-        // in Text View that we use to display the scheduled appointment
-        Button book = findViewById(R.id.zakazi);
-        book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<String> appointment_data = new ArrayList<>();
+    private void setupTimeSpinner() {
+        // Simulate already booked appointments
+        List<Integer> scheduledTimes = new ArrayList<>();
+        scheduledTimes.add(9);
+        scheduledTimes.add(11);
+        scheduledTimes.add(14);
+        scheduledTimes.add(16);
 
-                long selectedDate = calendarView.getDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
-                String dateString = "Date: " + sdf.format(new Date(selectedDate));
-                appointment_data.add(dateString);
+        // Working hours from 9 AM to 6 PM, each appointment is 1.5 hours
+        List<String> availableTimes = new ArrayList<>();
+        int[] startTimes = {9, 11, 13, 15, 17}; // 9:00, 11:00, 1:00, 3:00, 5:00
+        String[] timeSlots = {
+                "9:00 AM - 10:30 AM",
+                "11:00 AM - 12:30 PM",
+                "1:00 PM - 2:30 PM",
+                "3:00 PM - 4:30 PM",
+                "5:00 PM - 6:30 PM"
+        };
 
-                String selectedSpinnerItem = "Time: " + spinner.getSelectedItem().toString();
-                appointment_data.add(selectedSpinnerItem);
-
-                int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
-                RadioButton radioButton = findViewById(selectedRadioButtonId);
-                String selectedRadioButtonText = "Technician: " + radioButton.getText().toString();
-                appointment_data.add(selectedRadioButtonText);
-
-                TextView appointment_display = findViewById(R.id.prikaz_termina);
-                StringBuilder stringBuilder = new StringBuilder();
-                for(String line : appointment_data){
-                    stringBuilder.append(line).append("\n");
-                }
-                appointment_display.setText(stringBuilder.toString());
+        for (int i = 0; i < startTimes.length; i++) {
+            if (!scheduledTimes.contains(startTimes[i])) {
+                availableTimes.add(timeSlots[i]);
             }
-        });
+        }
 
-        // Cancel appointment
-        Button cancel = findViewById(R.id.otkazi_termin);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                appointment_display.setText(getString(R.string.no_appointment));
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(TEXT_KEY, appointment_display.getText().toString());
-                editor.apply();
-            }
-        });
+        // Add fallback if no times available
+        if (availableTimes.isEmpty()) {
+            availableTimes.add("No available appointments today 😔");
+        }
 
-        // Return to previous Activity (MainActivity)
-        Button back = findViewById(R.id.nazad);
-        final String APPOINTMENT_EXPORT_KEY = "appointmentExportKey";
+        // Setup spinner adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, availableTimes);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeSpinner.setAdapter(adapter);
+        timeSpinner.setSelection(0);
+    }
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
-                if (!appointment_display.getText().toString().equals(getString(R.string.no_appointment))) {
-                    intent.putExtra(APPOINTMENT_EXPORT_KEY, appointment_display.getText().toString());
-                }
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(TEXT_KEY, appointment_display.getText().toString());
-                editor.apply();
-                startActivity(intent);
-            }
-        });
+    private void setupButtons() {
+        // Book appointment button
+        bookAppointmentButton.setOnClickListener(v -> bookAppointment());
 
+        // Cancel appointment button
+        cancelAppointmentButton.setOnClickListener(v -> cancelAppointment());
+
+        // Logout button
+        logoutButton.setOnClickListener(v -> logout());
+    }
+
+    private void bookAppointment() {
+        List<String> appointmentData = new ArrayList<>();
+
+        // Get selected date
+        long selectedDate = calendarView.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+        String dateString = "📅 Date: " + sdf.format(new Date(selectedDate));
+        appointmentData.add(dateString);
+
+        // Get selected time
+        String selectedTime = "⏰ Time: " + timeSpinner.getSelectedItem().toString();
+        appointmentData.add(selectedTime);
+
+        // Get selected technician
+        int selectedRadioButtonId = technicianRadioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = findViewById(selectedRadioButtonId);
+        String selectedTechnician = "💅 Technician: " + radioButton.getText().toString();
+        appointmentData.add(selectedTechnician);
+
+        // Create appointment text
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String line : appointmentData) {
+            stringBuilder.append(line).append("\n");
+        }
+
+        // Update display
+        appointmentDisplay.setText(stringBuilder.toString().trim());
+
+        // Save appointment
+        saveAppointment(appointmentDisplay.getText().toString());
+
+        // Show success message
+        Toast.makeText(this, "✨ Appointment booked successfully! ✨", Toast.LENGTH_LONG).show();
+    }
+
+    private void cancelAppointment() {
+        appointmentDisplay.setText(getString(R.string.no_appointment));
+        saveAppointment(appointmentDisplay.getText().toString());
+        Toast.makeText(this, "Appointment cancelled", Toast.LENGTH_SHORT).show();
+    }
+
+    private void logout() {
+        // Save current appointment before logout
+        saveAppointment(appointmentDisplay.getText().toString());
+
+        // Clear login state
+        MainActivity.logout();
+
+        // Return to login screen
+        Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void saveAppointment(String appointmentText) {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TEXT_KEY, appointmentText);
+        editor.apply();
+    }
+
+    private void setupBackPressHandler() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
-                if(!appointment_display.getText().toString().equals(getString(R.string.no_appointment))) {
-                    intent.putExtra(APPOINTMENT_EXPORT_KEY, appointment_display.getText().toString());
-                }
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(TEXT_KEY, appointment_display.getText().toString());
-                editor.apply();
-                startActivity(intent);
+                // Prevent going back, user must use navigation or logout
+                Toast.makeText(ScheduleActivity.this, "Use navigation buttons to switch screens", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // When we return to our scheduling Activity, the scheduled appointment display will remain
+    // Handle state saving and restoration
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        TextView appointment_display = findViewById(R.id.prikaz_termina);
-        outState.putString(TEXT_STATE_KEY, appointment_display.getText().toString());
+        outState.putString(TEXT_STATE_KEY, appointmentDisplay.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        TextView appointment_display = findViewById(R.id.prikaz_termina);
         String text = savedInstanceState.getString(TEXT_STATE_KEY, getString(R.string.no_appointment));
-        appointment_display.setText(text);
+        appointmentDisplay.setText(text);
     }
 }
