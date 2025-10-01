@@ -53,8 +53,4 @@ public class NavigationHelper {
 
         return navView;
     }
-
-    public void updateCurrentUser(String user) {
-        this.currentUser = user;
-    }
 }

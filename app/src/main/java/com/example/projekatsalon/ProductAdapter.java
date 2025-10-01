@@ -44,7 +44,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.productPrice.setText(product.getPrice());
         holder.productDescription.setText(product.getDescription());
 
-        // Set image based on image name
         int imageResource = getImageResource(product.getImageName());
         holder.productImage.setImageResource(imageResource);
 
@@ -60,30 +59,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productList.size();
     }
 
-    public void updateProducts(List<Product> newProducts) {
-        this.productList = newProducts;
-        notifyDataSetChanged();
-    }
-
     private int getImageResource(String imageName) {
-        // Map image names to drawable resources
         switch (imageName) {
-            case "makaze":
-                return R.drawable.makaze;
-            case "sampon_za_kosu":
-                return R.drawable.sampon_za_kosu;
-            case "tri_plus_jedan_gratis_set":
-                return R.drawable.tri_plus_jedan_gratis_set;
-            case "vikleri":
-                return R.drawable.vikleri;
-            case "masinica_za_sisanje":
-                return R.drawable.masinica_za_sisanje;
-            case "ulje_za_kosu":
-                return R.drawable.ulje_za_kosu;
-            case "stalak_za_brijac":
-                return R.drawable.stalak_za_brijac;
+            case "polish":
+                return R.drawable.polish;
+            case "essential_kit":
+                return R.drawable.essential_kit;
+            case "manicure_starter":
+                return R.drawable.manicure_starter;
+            case "nail_file":
+                return R.drawable.nail_file;
+            case "lamp":
+                return R.drawable.lamp;
             default:
-                return R.drawable.ic_launcher_foreground; // Default image
+                return R.drawable.ic_launcher_foreground;
         }
     }
 

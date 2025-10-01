@@ -28,8 +28,6 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
     private TextView cartContents;
     private Button clearCartButton, checkoutButton, headerLogoutButton;
     private String currentUser;
-
-    // HashMap to track shopping cart state
     private HashMap<String, Integer> shoppingCart = new HashMap<>();
     private List<Product> allProducts = new ArrayList<>();
     private List<Product> filteredProducts = new ArrayList<>();
@@ -39,7 +37,6 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
-        // Get current user from intent
         Intent intent = getIntent();
         currentUser = intent.getStringExtra("user_export_key");
 
@@ -59,11 +56,9 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
     }
 
     private void setupBackPressHandler() {
-        // Modern way to handle back press
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Prevent going back to login, user must use navigation or logout
                 Toast.makeText(StoreActivity.this, "Use navigation buttons to switch screens or logout", Toast.LENGTH_SHORT).show();
             }
         });
@@ -83,11 +78,9 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
     }
 
     private void setupNavigation() {
-        // Simple navigation setup
         CardView storeButton = findViewById(R.id.nav_store_button);
         CardView scheduleButton = findViewById(R.id.nav_schedule_button);
 
-        // Store button is already current screen
         storeButton.setOnClickListener(v -> {
             Toast.makeText(this, "You're already in the store!", Toast.LENGTH_SHORT).show();
         });
@@ -152,7 +145,6 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         filteredProducts.clear();
         filteredProducts.addAll(allProducts);
 
-        // Initialize shopping cart with all products
         for (Product product : allProducts) {
             shoppingCart.put(product.getName(), 0);
         }
@@ -160,7 +152,6 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         productAdapter.notifyDataSetChanged();
         updateCartDisplay();
 
-        // Debug: Log product names
         for (Product product : allProducts) {
             System.out.println("Product: " + product.getName() + " - " + product.getPrice());
         }

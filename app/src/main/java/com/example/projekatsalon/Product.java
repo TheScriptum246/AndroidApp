@@ -15,7 +15,6 @@ public class Product {
         this.imageName = imageName;
     }
 
-    // Getters
     public int getId() {
         return id;
     }
@@ -36,25 +35,12 @@ public class Product {
         return imageName;
     }
 
-    // Setters
     public void setId(int id) {
         this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
     }
 
     @Override

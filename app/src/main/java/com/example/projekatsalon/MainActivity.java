@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Hide the status bar and action bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -31,16 +30,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        // Initialize database helper
         dbHelper = new MyDatabaseHelper(this);
 
-        // Initialize views
         initializeViews();
 
-        // Setup button listeners
         setupButtonListeners();
 
-        // Check if user is already logged in and redirect
         if (isLoggedIn && !loggedUsername.isEmpty()) {
             redirectToStore();
         }
@@ -71,14 +66,11 @@ public class MainActivity extends AppCompatActivity {
             String loginResult = dbHelper.LogInUser(username, passwordInt);
 
             if (!loginResult.isEmpty()) {
-                // Login successful
                 isLoggedIn = true;
                 loggedUsername = username;
 
-                // Show success message briefly before redirecting
                 Toast.makeText(this, "Welcome back, " + username + "!", Toast.LENGTH_SHORT).show();
 
-                // Redirect to store after a short delay
                 loginButton.postDelayed(this::redirectToStore, 1000);
             }
         } catch (NumberFormatException e) {
@@ -103,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
             int passwordInt = Integer.parseInt(password);
             dbHelper.SignUpUser(username, passwordInt);
 
-            // Clear the input fields after successful signup
             clearInputFields();
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Password must be numbers only", Toast.LENGTH_SHORT).show();
@@ -152,16 +143,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("user_export_key", loggedUsername);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish(); // Close the main activity
-    }
-
-    // Static methods to manage login state across activities
-    public static boolean isUserLoggedIn() {
-        return isLoggedIn;
-    }
-
-    public static String getLoggedUsername() {
-        return loggedUsername;
+        finish();
     }
 
     public static void logout() {
@@ -179,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Override back button to prevent going back to login after successful login
         if (isLoggedIn) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);

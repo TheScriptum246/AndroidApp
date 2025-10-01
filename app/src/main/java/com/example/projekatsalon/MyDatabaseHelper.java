@@ -77,18 +77,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         // Product 1
-        cv.put(PRODUCT_NAME, "Premium Nail Polish Collection");
+        cv.put(PRODUCT_NAME, "Premium Nail Polish");
         cv.put(PRODUCT_PRICE, "$45.99");
-        cv.put(PRODUCT_DESCRIPTION, "Professional quality nail polish set with 12 vibrant colors");
-        cv.put(PRODUCT_IMAGE_NAME, "makaze");
+        cv.put(PRODUCT_DESCRIPTION, "Professional quality nail polish");
+        cv.put(PRODUCT_IMAGE_NAME, "polish");
         db.insert(PRODUCTS_TABLE_NAME, null, cv);
         cv.clear();
 
         // Product 2
         cv.put(PRODUCT_NAME, "Cuticle Care Essential Kit");
         cv.put(PRODUCT_PRICE, "$28.75");
-        cv.put(PRODUCT_DESCRIPTION, "Complete cuticle care kit with oils and tools");
-        cv.put(PRODUCT_IMAGE_NAME, "sampon_za_kosu");
+        cv.put(PRODUCT_DESCRIPTION, "Complete cuticle care kit");
+        cv.put(PRODUCT_IMAGE_NAME, "essential_kit");
         db.insert(PRODUCTS_TABLE_NAME, null, cv);
         cv.clear();
 
@@ -96,7 +96,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put(PRODUCT_NAME, "Complete Manicure Starter Kit");
         cv.put(PRODUCT_PRICE, "$67.99");
         cv.put(PRODUCT_DESCRIPTION, "Everything you need to start your manicure journey");
-        cv.put(PRODUCT_IMAGE_NAME, "tri_plus_jedan_gratis_set");
+        cv.put(PRODUCT_IMAGE_NAME, "manicure_starter");
         db.insert(PRODUCTS_TABLE_NAME, null, cv);
         cv.clear();
 
@@ -104,7 +104,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put(PRODUCT_NAME, "Professional Nail Files Set");
         cv.put(PRODUCT_PRICE, "$24.99");
         cv.put(PRODUCT_DESCRIPTION, "High-quality nail files for perfect shaping");
-        cv.put(PRODUCT_IMAGE_NAME, "vikleri");
+        cv.put(PRODUCT_IMAGE_NAME, "nail_file");
         db.insert(PRODUCTS_TABLE_NAME, null, cv);
         cv.clear();
 
@@ -112,24 +112,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put(PRODUCT_NAME, "UV/LED Nail Lamp");
         cv.put(PRODUCT_PRICE, "$89.99");
         cv.put(PRODUCT_DESCRIPTION, "Professional grade UV/LED nail curing lamp");
-        cv.put(PRODUCT_IMAGE_NAME, "masinica_za_sisanje");
+        cv.put(PRODUCT_IMAGE_NAME, "lamp");
         db.insert(PRODUCTS_TABLE_NAME, null, cv);
         cv.clear();
-
-        // Product 6
-        cv.put(PRODUCT_NAME, "Luxury Hand Cream");
-        cv.put(PRODUCT_PRICE, "$32.50");
-        cv.put(PRODUCT_DESCRIPTION, "Moisturizing hand cream with natural ingredients");
-        cv.put(PRODUCT_IMAGE_NAME, "ulje_za_kosu");
-        db.insert(PRODUCTS_TABLE_NAME, null, cv);
-        cv.clear();
-
-        // Product 7
-        cv.put(PRODUCT_NAME, "Nail Art Design Tools");
-        cv.put(PRODUCT_PRICE, "$156.99");
-        cv.put(PRODUCT_DESCRIPTION, "Professional nail art tools for creative designs");
-        cv.put(PRODUCT_IMAGE_NAME, "stalak_za_brijac");
-        db.insert(PRODUCTS_TABLE_NAME, null, cv);
     }
 
     // Method to get all products from database

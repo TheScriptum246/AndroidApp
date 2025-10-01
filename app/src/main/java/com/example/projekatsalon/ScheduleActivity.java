@@ -34,8 +34,6 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private String loggedUser;
     private NavigationHelper navigationHelper;
-
-    // UI Components
     private CalendarView calendarView;
     private Spinner timeSpinner;
     private RadioGroup technicianRadioGroup;
@@ -47,7 +45,6 @@ public class ScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
-        // Get current user from intent
         Intent intent = getIntent();
         loggedUser = intent.getStringExtra(USER_EXPORT_KEY);
 
@@ -89,19 +86,15 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void setupCalendar() {
-        // Set minimum date (today)
         Calendar minDate = Calendar.getInstance();
         calendarView.setMinDate(minDate.getTimeInMillis());
 
-        // Set maximum date (1 month ahead)
         Calendar maxDate = Calendar.getInstance();
         maxDate.add(Calendar.MONTH, 1);
         calendarView.setMaxDate(maxDate.getTimeInMillis());
 
-        // Set today as selected
         calendarView.setDate(minDate.getTimeInMillis(), false, true);
 
-        // Handle date selection
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
@@ -111,16 +104,14 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void setupTimeSpinner() {
-        // Simulate already booked appointments
         List<Integer> scheduledTimes = new ArrayList<>();
         scheduledTimes.add(9);
         scheduledTimes.add(11);
         scheduledTimes.add(14);
         scheduledTimes.add(16);
 
-        // Working hours from 9 AM to 6 PM, each appointment is 1.5 hours
         List<String> availableTimes = new ArrayList<>();
-        int[] startTimes = {9, 11, 13, 15, 17}; // 9:00, 11:00, 1:00, 3:00, 5:00
+        int[] startTimes = {9, 11, 13, 15, 17};
         String[] timeSlots = {
                 "9:00 AM - 10:30 AM",
                 "11:00 AM - 12:30 PM",
@@ -135,12 +126,10 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         }
 
-        // Add fallback if no times available
         if (availableTimes.isEmpty()) {
             availableTimes.add("No available appointments today 😔");
         }
 
-        // Setup spinner adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, availableTimes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -149,48 +138,38 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        // Book appointment button
         bookAppointmentButton.setOnClickListener(v -> bookAppointment());
 
-        // Cancel appointment button
         cancelAppointmentButton.setOnClickListener(v -> cancelAppointment());
 
-        // Logout button
         logoutButton.setOnClickListener(v -> logout());
     }
 
     private void bookAppointment() {
         List<String> appointmentData = new ArrayList<>();
 
-        // Get selected date
         long selectedDate = calendarView.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
         String dateString = "📅 Date: " + sdf.format(new Date(selectedDate));
         appointmentData.add(dateString);
 
-        // Get selected time
         String selectedTime = "⏰ Time: " + timeSpinner.getSelectedItem().toString();
         appointmentData.add(selectedTime);
 
-        // Get selected technician
         int selectedRadioButtonId = technicianRadioGroup.getCheckedRadioButtonId();
         RadioButton radioButton = findViewById(selectedRadioButtonId);
         String selectedTechnician = "💅 Technician: " + radioButton.getText().toString();
         appointmentData.add(selectedTechnician);
 
-        // Create appointment text
         StringBuilder stringBuilder = new StringBuilder();
         for (String line : appointmentData) {
             stringBuilder.append(line).append("\n");
         }
 
-        // Update display
         appointmentDisplay.setText(stringBuilder.toString().trim());
 
-        // Save appointment
         saveAppointment(appointmentDisplay.getText().toString());
 
-        // Show success message
         Toast.makeText(this, "✨ Appointment booked successfully! ✨", Toast.LENGTH_LONG).show();
     }
 
@@ -201,13 +180,10 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        // Save current appointment before logout
         saveAppointment(appointmentDisplay.getText().toString());
 
-        // Clear login state
         MainActivity.logout();
 
-        // Return to login screen
         Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -231,7 +207,6 @@ public class ScheduleActivity extends AppCompatActivity {
         });
     }
 
-    // Handle state saving and restoration
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

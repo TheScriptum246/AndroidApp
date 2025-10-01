@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/soft_pink">
 
-    <!-- Header -->
     <TextView
         android:id="@+id/schedule_header"
         android:layout_width="wrap_content"
@@ -21,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Main Content ScrollView -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -37,7 +35,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Calendar Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,14 +71,12 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Booking Options Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="16dp">
 
-                <!-- Time Selection Card -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -119,7 +114,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <!-- Technician Selection Card -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -178,7 +172,6 @@
 
             </LinearLayout>
 
-            <!-- Current Appointment Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -241,7 +234,6 @@
 
     </ScrollView>
 
-    <!-- Bottom Section -->
     <LinearLayout
         android:id="@+id/bottom_section"
         android:layout_width="0dp"
@@ -251,7 +243,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Action Buttons -->
         <LinearLayout
             android:layout_width="384dp"
             android:layout_height="76dp"
@@ -288,7 +279,6 @@
 
     </LinearLayout>
 
-    <!-- Navigation Bar Container -->
     <FrameLayout
         android:id="@+id/navigation_container"
         android:layout_width="0dp"

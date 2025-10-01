@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/soft_pink">
 
-    <!-- Header with title, logout and search -->
     <LinearLayout
         android:id="@+id/header_layout"
         android:layout_width="0dp"
@@ -54,7 +53,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_layout" />
 
-    <!-- Products RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/products_recycler_view"
         android:layout_width="0dp"
@@ -67,7 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
-    <!-- Cart Section -->
     <LinearLayout
         android:id="@+id/cart_section"
         android:layout_width="0dp"
@@ -111,7 +108,6 @@
 
     </LinearLayout>
 
-    <!-- Bottom Buttons -->
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="0dp"
